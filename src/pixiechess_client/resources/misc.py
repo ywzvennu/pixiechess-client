@@ -36,6 +36,7 @@ class MiscResource:
         *,
         since: datetime | str | None = None,
         type: str | None = None,
+        limit: int | None = None,
     ) -> list[dict[str, Any]]:
         params: dict[str, Any] = {}
         if since is not None:
@@ -44,6 +45,8 @@ class MiscResource:
             )
         if type is not None:
             params["type"] = type
+        if limit is not None:
+            params["limit"] = limit
         return self._http.get("/live-feed", params=params)
 
     async def alive_feed(
@@ -51,6 +54,7 @@ class MiscResource:
         *,
         since: datetime | str | None = None,
         type: str | None = None,
+        limit: int | None = None,
     ) -> list[dict[str, Any]]:
         params: dict[str, Any] = {}
         if since is not None:
@@ -59,4 +63,6 @@ class MiscResource:
             )
         if type is not None:
             params["type"] = type
+        if limit is not None:
+            params["limit"] = limit
         return await self._http.aget("/live-feed", params=params)
