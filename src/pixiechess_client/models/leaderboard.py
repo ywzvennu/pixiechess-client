@@ -4,7 +4,13 @@ from typing import Any
 
 from .common import CamelModel, Helmet
 
-__all__ = ["LeaderboardEntry", "LeaderboardPage", "LeaderboardStats"]
+__all__ = [
+    "LeaderboardEntry",
+    "LeaderboardPage",
+    "LeaderboardStats",
+    "PointsLeaderboardEntry",
+    "PointsLeaderboardPage",
+]
 
 
 class LeaderboardEntry(CamelModel):
@@ -35,3 +41,24 @@ class LeaderboardPage(CamelModel):
     total_pages: int
     current_user: dict | None = None
     stats: LeaderboardStats | None = None
+
+
+class PointsLeaderboardEntry(CamelModel):
+    rank: int
+    address: str
+    username: str
+    username_display: str
+    helmet: Helmet | None = None
+    total_points: int
+    today: int
+    this_week: int
+    rank_change: int
+    is_online: bool
+
+
+class PointsLeaderboardPage(CamelModel):
+    entries: list[PointsLeaderboardEntry]
+    total_count: int
+    page: int
+    total_pages: int
+    current_user: dict | None = None

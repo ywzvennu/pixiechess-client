@@ -2,7 +2,12 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from ..models.leaderboard import LeaderboardEntry, LeaderboardPage
+from ..models.leaderboard import (
+    LeaderboardEntry,
+    LeaderboardPage,
+    PointsLeaderboardEntry,
+    PointsLeaderboardPage,
+)
 from ..pagination import AsyncPageIterator, PageIterator
 
 if TYPE_CHECKING:
@@ -36,5 +41,41 @@ class LeaderboardResource:
 
         def parse(data):
             return [LeaderboardEntry.model_validate(e) for e in data.get("entries", [])]
+
+        return AsyncPageIterator(fetch, parse, total_pages_key="totalPages")
+
+    # Points leaderboard
+
+    def points(self, page: int = 1) -> PointsLeaderboardPage:
+        data = self._http.get("/points-leaderboard", params={"page": page})
+        return PointsLeaderboardPage.model_validate(data)
+
+    async def apoints(self, page: int = 1) -> PointsLeaderboardPage:
+        data = await self._http.aget("/points-leaderboard", params={"page": page})
+        return PointsLeaderboardPage.model_validate(data)
+
+    def points_iter(self) -> PageIterator[PointsLeaderboardEntry]:
+        def fetch(page: int):
+            return self._http.get("/points-leaderboard", params={"page": page})
+
+        def parse(data):
+            return [
+                PointsLeaderboardEntry.model_validate(e)
+                for e in data.get("entries", [])
+            ]
+
+        return PageIterator(fetch, parse, total_pages_key="totalPages")
+
+    def apoints_iter(self) -> AsyncPageIterator[PointsLeaderboardEntry]:
+        async def fetch(page: int):
+            return await self._http.aget(
+                "/points-leaderboard", params={"page": page}
+            )
+
+        def parse(data):
+            return [
+                PointsLeaderboardEntry.model_validate(e)
+                for e in data.get("entries", [])
+            ]
 
         return AsyncPageIterator(fetch, parse, total_pages_key="totalPages")
