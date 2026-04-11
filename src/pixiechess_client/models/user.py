@@ -24,22 +24,22 @@ class ColorRecord(CamelModel):
 
 class User(CamelModel):
     id: str = Field(alias="_id")
-    username_display: str
-    username: str
     address: str
+    username: str | None = None
+    username_display: str | None = None
     wallet_client_type: str | None = None
     helmet: Helmet | None = None
     last_login: datetime | None = None
-    win_rate: int
-    match_count: int
-    wins: int
-    losses: int
-    draws: int
+    win_rate: int = 0
+    match_count: int = 0
+    wins: int = 0
+    losses: int = 0
+    draws: int = 0
     casual_games: int | None = None
-    streak: Streak
+    streak: Streak | None = None
     color_record: dict[str, ColorRecord] = {}
-    trophies: int
-    rating: float
+    trophies: int = 0
+    rating: float = 0.0
     rd: float | None = None
     is_provisional: bool = False
     peak_rating: float | None = None
