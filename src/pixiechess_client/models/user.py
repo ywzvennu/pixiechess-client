@@ -28,7 +28,7 @@ class User(CamelModel):
     username: str
     address: str
     wallet_client_type: str | None = None
-    helmet: Helmet
+    helmet: Helmet | None = None
     last_login: datetime | None = None
     win_rate: int
     match_count: int
