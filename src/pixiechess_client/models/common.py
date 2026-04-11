@@ -20,6 +20,6 @@ class Helmet(CamelModel):
 
 class PlayerInfo(CamelModel):
     address: str
-    username: str
-    username_display: str
-    helmet: Helmet
+    username: str | None = None
+    username_display: str | None = None
+    helmet: Helmet | None = None
