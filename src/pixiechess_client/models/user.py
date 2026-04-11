@@ -61,7 +61,7 @@ class MatchHistoryEntry(CamelModel):
     winner: str | None = None
     result_for_user: str
     outcome: str
-    rated: bool
+    rated: bool = False
     rating_change: float | None = None
     timing: MatchTiming
 
