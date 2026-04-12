@@ -1,12 +1,22 @@
 from __future__ import annotations
 
-from datetime import datetime
+from typing import TYPE_CHECKING
 
 from pydantic import Field
 
 from .common import CamelModel, Helmet, PlayerInfo
 
-__all__ = ["User", "Streak", "ColorRecord", "MatchHistoryEntry", "MatchHistoryPage", "MatchTiming"]
+if TYPE_CHECKING:
+    from datetime import datetime
+
+__all__ = [
+    "User",
+    "Streak",
+    "ColorRecord",
+    "MatchHistoryEntry",
+    "MatchHistoryPage",
+    "MatchTiming",
+]
 
 
 class Streak(CamelModel):

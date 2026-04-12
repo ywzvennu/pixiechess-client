@@ -47,7 +47,9 @@ class UsersResource:
             )
 
         def parse(data):
-            return [MatchHistoryEntry.model_validate(m) for m in data.get("matches", [])]
+            return [
+                MatchHistoryEntry.model_validate(m) for m in data.get("matches", [])
+            ]
 
         return PageIterator(fetch, parse, total_pages_key=None)
 
@@ -61,6 +63,8 @@ class UsersResource:
             )
 
         def parse(data):
-            return [MatchHistoryEntry.model_validate(m) for m in data.get("matches", [])]
+            return [
+                MatchHistoryEntry.model_validate(m) for m in data.get("matches", [])
+            ]
 
         return AsyncPageIterator(fetch, parse, total_pages_key=None)

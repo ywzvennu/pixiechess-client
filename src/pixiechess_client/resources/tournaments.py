@@ -2,6 +2,9 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any
 
+if TYPE_CHECKING:
+    import builtins
+
 from ..models.tournaments import Tournament, TournamentList, WaitlistEntry
 
 if TYPE_CHECKING:
@@ -72,10 +75,10 @@ class TournamentsResource:
         data = await self._http.aget(f"/tournament/details/{tournament_id}")
         return Tournament.model_validate(data["data"])
 
-    def waitlist(self, tournament_id: str) -> list[WaitlistEntry]:
+    def waitlist(self, tournament_id: str) -> builtins.list[WaitlistEntry]:
         data = self._http.get(f"/tournament/waitlist/{tournament_id}")
         return [WaitlistEntry.model_validate(e) for e in data]
 
-    async def awaitlist(self, tournament_id: str) -> list[WaitlistEntry]:
+    async def awaitlist(self, tournament_id: str) -> builtins.list[WaitlistEntry]:
         data = await self._http.aget(f"/tournament/waitlist/{tournament_id}")
         return [WaitlistEntry.model_validate(e) for e in data]

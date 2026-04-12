@@ -65,9 +65,7 @@ class AuctionsResource:
         return data.get("days", [])
 
     async def adaily_volume(self, *, range: str = "7d") -> list[dict[str, Any]]:
-        data = await self._http.aget(
-            "/auctions/daily-volume", params={"range": range}
-        )
+        data = await self._http.aget("/auctions/daily-volume", params={"range": range})
         return data.get("days", [])
 
     def today_summary(self) -> dict[str, Any]:

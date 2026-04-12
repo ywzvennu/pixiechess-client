@@ -68,9 +68,7 @@ class LeaderboardResource:
 
     def apoints_iter(self) -> AsyncPageIterator[PointsLeaderboardEntry]:
         async def fetch(page: int):
-            return await self._http.aget(
-                "/points-leaderboard", params={"page": page}
-            )
+            return await self._http.aget("/points-leaderboard", params={"page": page})
 
         def parse(data):
             return [

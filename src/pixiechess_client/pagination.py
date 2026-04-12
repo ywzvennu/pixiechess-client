@@ -1,12 +1,10 @@
 from __future__ import annotations
 
-from collections.abc import AsyncIterator, Iterator
-from typing import Any, Callable, Coroutine, Generic, TypeVar
-
-T = TypeVar("T")
+from collections.abc import AsyncIterator, Callable, Coroutine, Iterator
+from typing import Any
 
 
-class PageIterator(Iterator[T], Generic[T]):
+class PageIterator[T](Iterator[T]):
     """Sync auto-paginating iterator.
 
     Lazily fetches pages and yields items one at a time.
@@ -49,7 +47,7 @@ class PageIterator(Iterator[T], Generic[T]):
         return self._buffer.pop(0)
 
 
-class AsyncPageIterator(AsyncIterator[T], Generic[T]):
+class AsyncPageIterator[T](AsyncIterator[T]):
     """Async auto-paginating iterator."""
 
     def __init__(
