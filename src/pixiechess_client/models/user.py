@@ -1,13 +1,10 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from datetime import datetime  # noqa: TCH003 — Pydantic needs this at runtime
 
 from pydantic import Field
 
 from .common import CamelModel, Helmet, PlayerInfo
-
-if TYPE_CHECKING:
-    from datetime import datetime
 
 __all__ = [
     "User",
