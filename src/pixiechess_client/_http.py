@@ -38,11 +38,13 @@ class HttpClient:
         self,
         base_url: str = DEFAULT_BASE_URL,
         timeout: float = 30.0,
+        sync_client: httpx.Client | None = None,
+        async_client: httpx.AsyncClient | None = None,
     ) -> None:
         self._base_url = base_url
         self._timeout = timeout
-        self._sync: httpx.Client | None = None
-        self._async: httpx.AsyncClient | None = None
+        self._sync = sync_client
+        self._async = async_client
 
     @property
     def sync(self) -> httpx.Client:

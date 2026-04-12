@@ -1,6 +1,11 @@
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 from ._http import DEFAULT_BASE_URL, HttpClient
+
+if TYPE_CHECKING:
+    import httpx
 from .resources.auctions import AuctionsResource
 from .resources.games import GamesResource
 from .resources.leaderboard import LeaderboardResource
@@ -16,7 +21,7 @@ class PixieChessClient:
     Usage::
 
         with PixieChessClient() as client:
-            user = client.users.get("ghypol")
+            user = client.users.get("username")
             lb = client.leaderboard.get()
     """
 
@@ -24,8 +29,11 @@ class PixieChessClient:
         self,
         base_url: str = DEFAULT_BASE_URL,
         timeout: float = 30.0,
+        http_client: httpx.Client | None = None,
     ) -> None:
-        self._http = HttpClient(base_url=base_url, timeout=timeout)
+        self._http = HttpClient(
+            base_url=base_url, timeout=timeout, sync_client=http_client
+        )
         self.users = UsersResource(self._http)
         self.games = GamesResource(self._http)
         self.leaderboard = LeaderboardResource(self._http)
@@ -50,7 +58,7 @@ class AsyncPixieChessClient:
     Usage::
 
         async with AsyncPixieChessClient() as client:
-            user = await client.users.aget("ghypol")
+            user = await client.users.aget("username")
             lb = await client.leaderboard.aget()
     """
 
@@ -58,8 +66,11 @@ class AsyncPixieChessClient:
         self,
         base_url: str = DEFAULT_BASE_URL,
         timeout: float = 30.0,
+        http_client: httpx.AsyncClient | None = None,
     ) -> None:
-        self._http = HttpClient(base_url=base_url, timeout=timeout)
+        self._http = HttpClient(
+            base_url=base_url, timeout=timeout, async_client=http_client
+        )
         self.users = UsersResource(self._http)
         self.games = GamesResource(self._http)
         self.leaderboard = LeaderboardResource(self._http)
