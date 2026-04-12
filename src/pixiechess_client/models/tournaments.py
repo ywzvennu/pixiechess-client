@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from datetime import datetime  # noqa: TCH003 — Pydantic needs this at runtime
 from typing import Any
 
 from pydantic import Field
@@ -92,5 +93,5 @@ class WaitlistEntry(CamelModel):
     tournament_id: str
     address: str
     has_been_attempted: bool = False
-    created_at: str = Field(alias="createdAt")
-    updated_at: str | None = Field(None, alias="updatedAt")
+    created_at: datetime
+    updated_at: datetime | None = None

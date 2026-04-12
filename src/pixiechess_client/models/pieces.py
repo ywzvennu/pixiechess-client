@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from datetime import datetime  # noqa: TCH003 — Pydantic needs this at runtime
+
 from pydantic import Field
 
 from .common import CamelModel
@@ -26,7 +28,7 @@ class Piece(CamelModel):
     token_id: int | None = None
     owner: str | None = None
     metadata: PieceMetadata | None = None
-    created_at: str | None = Field(None, alias="createdAt")
+    created_at: datetime | None = None
     count: int | None = None
 
     model_config = {**CamelModel.model_config, "extra": "allow"}

@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from datetime import datetime  # noqa: TCH003 — Pydantic needs this at runtime
+
 from pydantic import Field
 
 from .common import CamelModel
@@ -22,12 +24,12 @@ class AuctionMetadata(CamelModel):
 class Auction(CamelModel):
     id: str = Field(alias="_id")
     address: str
-    created_at: str = Field(alias="createdAt")
+    created_at: datetime
     end_time: int
     start_time: int
     metadata: AuctionMetadata
     type: str
-    updated_at: str | None = Field(None, alias="updatedAt")
+    updated_at: datetime | None = None
     last_mint_price_in_wei: str | None = None
 
 

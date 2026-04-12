@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from datetime import datetime  # noqa: TCH003 — Pydantic needs this at runtime
 from typing import Any
 
 from pydantic import Field
@@ -16,8 +17,8 @@ class Game(CamelModel):
     status: str | None = None
     winner: int | None = None
     outcome: str | None = None
-    created_at: str | None = Field(None, alias="createdAt")
-    updated_at: str | None = Field(None, alias="updatedAt")
+    created_at: datetime | None = None
+    updated_at: datetime | None = None
 
     model_config = {**CamelModel.model_config, "extra": "allow"}
 
