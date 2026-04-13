@@ -3,7 +3,7 @@ from __future__ import annotations
 from datetime import datetime
 from typing import TYPE_CHECKING, Any
 
-from ..models.misc import EthUsdPrice
+from ..models.misc import EthUsdPrice, PublicConfig
 
 if TYPE_CHECKING:
     from .._http import HttpClient
@@ -13,11 +13,13 @@ class MiscResource:
     def __init__(self, http: HttpClient) -> None:
         self._http = http
 
-    def config(self) -> dict[str, Any]:
-        return self._http.get("/config/public")
+    def config(self) -> PublicConfig:
+        data = self._http.get("/config/public")
+        return PublicConfig.model_validate(data)
 
-    async def aconfig(self) -> dict[str, Any]:
-        return await self._http.aget("/config/public")
+    async def aconfig(self) -> PublicConfig:
+        data = await self._http.aget("/config/public")
+        return PublicConfig.model_validate(data)
 
     def eth_usd_price(self) -> EthUsdPrice:
         data = self._http.get("/eth-usd-price")
