@@ -2,7 +2,13 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any
 
-from ..models.auctions import Auction, AuctionDaySummary, AuctionPieceInfo, Prices
+from ..models.auctions import (
+    Auction,
+    AuctionDaySummary,
+    AuctionPieceInfo,
+    CompletedDaySummary,
+    Prices,
+)
 
 if TYPE_CHECKING:
     from .._http import HttpClient
@@ -76,11 +82,13 @@ class AuctionsResource:
         data = await self._http.aget("/auctions/today-summary")
         return AuctionDaySummary.model_validate(data)
 
-    def last_completed_day_summary(self) -> dict[str, Any]:
-        return self._http.get("/auctions/last-completed-day-summary")
+    def last_completed_day_summary(self) -> CompletedDaySummary:
+        data = self._http.get("/auctions/last-completed-day-summary")
+        return CompletedDaySummary.model_validate(data)
 
-    async def alast_completed_day_summary(self) -> dict[str, Any]:
-        return await self._http.aget("/auctions/last-completed-day-summary")
+    async def alast_completed_day_summary(self) -> CompletedDaySummary:
+        data = await self._http.aget("/auctions/last-completed-day-summary")
+        return CompletedDaySummary.model_validate(data)
 
     def prices(self) -> Prices:
         data = self._http.get("/prices")

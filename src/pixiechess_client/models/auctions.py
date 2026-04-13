@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-from datetime import datetime  # noqa: TCH003 — Pydantic needs this at runtime
+from datetime import date, datetime  # noqa: TCH003 — Pydantic needs this at runtime
 
-from pydantic import Field
+from pydantic import Field, field_validator
 
 from .common import CamelModel
 
@@ -13,6 +13,7 @@ __all__ = [
     "VrgdaPrice",
     "InstantMintPrice",
     "AuctionDaySummary",
+    "CompletedDaySummary",
     "Prices",
 ]
 
@@ -60,6 +61,20 @@ class InstantMintPrice(CamelModel):
 class AuctionDaySummary(CamelModel):
     pieces_sold: int
     total_sales_eth: float
+
+
+class CompletedDaySummary(CamelModel):
+    date: date
+    total_eth: float
+    pieces_sold: int
+    eth_change_percent: float
+
+    @field_validator("date", mode="before")
+    @classmethod
+    def _parse_date(cls, v: object) -> object:
+        if isinstance(v, dict):
+            return date(v["year"], v["month"], v["day"])
+        return v
 
 
 class Prices(CamelModel):
