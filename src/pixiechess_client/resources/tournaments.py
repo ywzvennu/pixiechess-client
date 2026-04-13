@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING, Any
 if TYPE_CHECKING:
     import builtins
 
-from ..models.tournaments import Tournament, TournamentList, WaitlistEntry
+from ..models.tournaments import TournamentDetails, TournamentList, WaitlistEntry
 
 if TYPE_CHECKING:
     from .._http import HttpClient
@@ -67,13 +67,13 @@ class TournamentsResource:
         data = await self._http.aget("/tournament/list", params=params)
         return TournamentList.model_validate(data)
 
-    def details(self, tournament_id: str) -> Tournament:
+    def details(self, tournament_id: str) -> TournamentDetails:
         data = self._http.get(f"/tournament/details/{tournament_id}")
-        return Tournament.model_validate(data["data"])
+        return TournamentDetails.model_validate(data)
 
-    async def adetails(self, tournament_id: str) -> Tournament:
+    async def adetails(self, tournament_id: str) -> TournamentDetails:
         data = await self._http.aget(f"/tournament/details/{tournament_id}")
-        return Tournament.model_validate(data["data"])
+        return TournamentDetails.model_validate(data)
 
     def waitlist(self, tournament_id: str) -> builtins.list[WaitlistEntry]:
         data = self._http.get(f"/tournament/waitlist/{tournament_id}")

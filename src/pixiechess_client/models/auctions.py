@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from datetime import date, datetime  # noqa: TCH003 — Pydantic needs this at runtime
+from typing import cast
 
 from pydantic import Field, field_validator
 
@@ -75,7 +76,8 @@ class InstantMintPrice(CamelModel):
 
 def _parse_date_dict(v: object) -> object:
     if isinstance(v, dict):
-        return date(v["year"], v["month"], v["day"])
+        d = cast("dict[str, int]", v)
+        return date(d["year"], d["month"], d["day"])
     return v
 
 

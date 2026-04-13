@@ -18,6 +18,9 @@ __all__ = [
     "NotificationStatus",
     "PayoutSplit",
     "Tournament",
+    "GameTimingPlayer",
+    "GameTiming",
+    "TournamentDetails",
     "TournamentList",
     "WaitlistEntry",
 ]
@@ -120,8 +123,36 @@ class Tournament(CamelModel):
     payout_skipped_players: list[str] = []
     created_at: datetime | None = None
     updated_at: datetime | None = None
+    has_play_in_round: bool = False
+    winner_id: str | None = None
+    payout_status: str | None = None
+    payout_total_eth: float | None = None
+    payout_started_at: int | None = None
+    payout_completed_at: int | None = None
 
-    model_config = {**CamelModel.model_config, "extra": "allow"}
+
+class GameTimingPlayer(CamelModel):
+    user_id: str
+    turn_start_time: int | None = None
+    elapsed: int
+    status: str
+
+
+class GameTiming(CamelModel):
+    id: str = Field(alias="_id")
+    game_id: str
+    duration_ms: int
+    players: list[GameTimingPlayer]
+    move_deadline: int | None = None
+    created_at: datetime | None = None
+    updated_at: datetime | None = None
+
+
+class TournamentDetails(CamelModel):
+    data: Tournament
+    game_timings: dict[str, GameTiming] = {}
+    game_player_ids: dict[str, dict[str, str]] = {}
+    game_statuses: dict[str, str] = {}
 
 
 class TournamentList(CamelModel):
