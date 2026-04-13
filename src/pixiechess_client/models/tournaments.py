@@ -12,6 +12,8 @@ __all__ = [
     "TournamentColors",
     "TournamentUserInfo",
     "TournamentRuleset",
+    "NotificationStatus",
+    "PayoutSplit",
     "Tournament",
     "TournamentList",
     "WaitlistEntry",
@@ -51,6 +53,18 @@ class TournamentRuleset(CamelModel):
     gameplay: dict[str, Any] | None = None
 
 
+class NotificationStatus(CamelModel):
+    registration_soon: bool = False
+    registration_open: bool = False
+    starting_soon_for: list[str] = []
+    starting_now: bool = False
+
+
+class PayoutSplit(CamelModel):
+    placement: int
+    percentage: float
+
+
 class Tournament(CamelModel):
     id: str = Field(alias="_id")
     tournament_id: str
@@ -79,6 +93,12 @@ class Tournament(CamelModel):
     matchups_by_round: list[Any] = []
     status: str | None = None
     ruleset: TournamentRuleset | None = None
+    notification_status: NotificationStatus | None = None
+    payout_mode: str | None = None
+    payout_splits: list[PayoutSplit] = []
+    payout_skipped_players: list[str] = []
+    created_at: datetime | None = None
+    updated_at: datetime | None = None
 
     model_config = {**CamelModel.model_config, "extra": "allow"}
 
