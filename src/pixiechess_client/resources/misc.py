@@ -3,7 +3,7 @@ from __future__ import annotations
 from datetime import datetime
 from typing import TYPE_CHECKING, Any
 
-from ..models.misc import EthUsdPrice, PublicConfig
+from ..models.misc import EthUsdPrice, LiveFeedEvent, PublicConfig
 
 if TYPE_CHECKING:
     from .._http import HttpClient
@@ -43,7 +43,7 @@ class MiscResource:
         since: datetime | str | None = None,
         type: str | None = None,
         limit: int | None = None,
-    ) -> list[dict[str, Any]]:
+    ) -> list[LiveFeedEvent]:
         params: dict[str, Any] = {}
         if since is not None:
             params["since"] = (
@@ -53,7 +53,8 @@ class MiscResource:
             params["type"] = type
         if limit is not None:
             params["limit"] = limit
-        return self._http.get("/live-feed", params=params)
+        data = self._http.get("/live-feed", params=params)
+        return [LiveFeedEvent.model_validate(e) for e in data]
 
     async def alive_feed(
         self,
@@ -61,7 +62,7 @@ class MiscResource:
         since: datetime | str | None = None,
         type: str | None = None,
         limit: int | None = None,
-    ) -> list[dict[str, Any]]:
+    ) -> list[LiveFeedEvent]:
         params: dict[str, Any] = {}
         if since is not None:
             params["since"] = (
@@ -71,4 +72,5 @@ class MiscResource:
             params["type"] = type
         if limit is not None:
             params["limit"] = limit
-        return await self._http.aget("/live-feed", params=params)
+        data = await self._http.aget("/live-feed", params=params)
+        return [LiveFeedEvent.model_validate(e) for e in data]
