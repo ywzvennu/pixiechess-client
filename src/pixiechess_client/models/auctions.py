@@ -14,6 +14,7 @@ __all__ = [
     "InstantMintPrice",
     "AuctionDaySummary",
     "CompletedDaySummary",
+    "DailyVolume",
     "Prices",
 ]
 
@@ -58,6 +59,12 @@ class InstantMintPrice(CamelModel):
     price_trend: str | None = None
 
 
+def _parse_date_dict(v: object) -> object:
+    if isinstance(v, dict):
+        return date(v["year"], v["month"], v["day"])
+    return v
+
+
 class AuctionDaySummary(CamelModel):
     pieces_sold: int
     total_sales_eth: float
@@ -69,12 +76,15 @@ class CompletedDaySummary(CamelModel):
     pieces_sold: int
     eth_change_percent: float
 
-    @field_validator("date", mode="before")
-    @classmethod
-    def _parse_date(cls, v: object) -> object:
-        if isinstance(v, dict):
-            return date(v["year"], v["month"], v["day"])
-        return v
+    _parse_date = field_validator("date", mode="before")(_parse_date_dict)
+
+
+class DailyVolume(CamelModel):
+    date: date
+    pieces_sold: int
+    total_eth: float
+
+    _parse_date = field_validator("date", mode="before")(_parse_date_dict)
 
 
 class Prices(CamelModel):

@@ -7,6 +7,7 @@ from ..models.auctions import (
     AuctionDaySummary,
     AuctionPieceInfo,
     CompletedDaySummary,
+    DailyVolume,
     Prices,
 )
 
@@ -52,27 +53,27 @@ class AuctionsResource:
 
     def piece_daily_volume(
         self, piece_key: str, *, range: str = "30d"
-    ) -> list[dict[str, Any]]:
+    ) -> list[DailyVolume]:
         data = self._http.get(
             f"/auctions/piece/{piece_key}/daily-volume", params={"range": range}
         )
-        return data.get("days", [])
+        return [DailyVolume.model_validate(d) for d in data.get("days", [])]
 
     async def apiece_daily_volume(
         self, piece_key: str, *, range: str = "30d"
-    ) -> list[dict[str, Any]]:
+    ) -> list[DailyVolume]:
         data = await self._http.aget(
             f"/auctions/piece/{piece_key}/daily-volume", params={"range": range}
         )
-        return data.get("days", [])
+        return [DailyVolume.model_validate(d) for d in data.get("days", [])]
 
-    def daily_volume(self, *, range: str = "7d") -> list[dict[str, Any]]:
+    def daily_volume(self, *, range: str = "7d") -> list[DailyVolume]:
         data = self._http.get("/auctions/daily-volume", params={"range": range})
-        return data.get("days", [])
+        return [DailyVolume.model_validate(d) for d in data.get("days", [])]
 
-    async def adaily_volume(self, *, range: str = "7d") -> list[dict[str, Any]]:
+    async def adaily_volume(self, *, range: str = "7d") -> list[DailyVolume]:
         data = await self._http.aget("/auctions/daily-volume", params={"range": range})
-        return data.get("days", [])
+        return [DailyVolume.model_validate(d) for d in data.get("days", [])]
 
     def today_summary(self) -> AuctionDaySummary:
         data = self._http.get("/auctions/today-summary")
