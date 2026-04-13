@@ -12,6 +12,7 @@ __all__ = [
     "AuctionPieceInfo",
     "VrgdaPrice",
     "InstantMintPrice",
+    "AuctionDaySummary",
     "Prices",
 ]
 
@@ -54,6 +55,11 @@ class InstantMintPrice(CamelModel):
     total_sold: int
     max_mints: int
     price_trend: str | None = None
+
+
+class AuctionDaySummary(CamelModel):
+    pieces_sold: int
+    total_sales_eth: float
 
 
 class Prices(CamelModel):
