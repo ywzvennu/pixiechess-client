@@ -9,6 +9,7 @@ from .common import CamelModel
 __all__ = [
     "AuctionMetadata",
     "Auction",
+    "PastAuction",
     "AuctionPieceInfo",
     "VrgdaPrice",
     "InstantMintPrice",
@@ -36,11 +37,24 @@ class Auction(CamelModel):
     last_mint_price_in_wei: str | None = None
 
 
+class PastAuction(Auction):
+    end_date: date | None = None
+    final_price: str | None = None
+
+    @field_validator("end_date", mode="before")
+    @classmethod
+    def _parse_end_date(cls, v: object) -> object:
+        if isinstance(v, str):
+            month, day = v.split("/")
+            return date(date.today().year, int(month), int(day))
+        return v
+
+
 class AuctionPieceInfo(CamelModel):
     piece_key: str
     has_auction_history: bool
     total_units_sold: int
-    most_recent_past_auction: dict | None = None
+    most_recent_past_auction: PastAuction | None = None
 
 
 class VrgdaPrice(CamelModel):
