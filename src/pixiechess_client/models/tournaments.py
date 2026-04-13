@@ -11,6 +11,9 @@ __all__ = [
     "TournamentImages",
     "TournamentColors",
     "TournamentUserInfo",
+    "BurnRuleset",
+    "SubstitutionRule",
+    "GameplayRuleset",
     "TournamentRuleset",
     "NotificationStatus",
     "PayoutSplit",
@@ -48,9 +51,27 @@ class TournamentUserInfo(CamelModel):
     pending_burn_asset_ids: list[Any] = []
 
 
+class BurnRuleset(CamelModel):
+    min: int
+    max: int
+    exclusive_pieces: list[str] = []
+    exclusive_piece_types: list[str] = []
+    banned_pieces: list[str] = []
+    banned_piece_types: list[str] = []
+
+
+class SubstitutionRule(CamelModel):
+    min: int
+    max: int
+
+
+class GameplayRuleset(CamelModel):
+    substitution: SubstitutionRule | None = None
+
+
 class TournamentRuleset(CamelModel):
-    burn: dict[str, Any] | None = None
-    gameplay: dict[str, Any] | None = None
+    burn: BurnRuleset | None = None
+    gameplay: GameplayRuleset | None = None
 
 
 class NotificationStatus(CamelModel):
