@@ -28,10 +28,10 @@ class Piece(CamelModel):
     token_id: int | None = None
     owner: str | None = None
     metadata: PieceMetadata | None = None
+    last_transfer_block_number: int | None = None
     created_at: datetime | None = None
+    updated_at: datetime | None = None
     count: int | None = None
-
-    model_config = {**CamelModel.model_config, "extra": "allow"}
 
 
 class PiecesPage(CamelModel):
