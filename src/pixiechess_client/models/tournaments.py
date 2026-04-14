@@ -135,7 +135,7 @@ class GameTimingPlayer(CamelModel):
     user_id: str
     turn_start_time: int | None = None
     elapsed: int
-    status: str
+    status: str | None = None
 
 
 class GameTiming(CamelModel):
