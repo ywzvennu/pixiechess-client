@@ -8,17 +8,11 @@ from .common import CamelModel, Helmet, PlayerInfo
 
 __all__ = [
     "User",
-    "Streak",
     "ColorRecord",
     "MatchHistoryEntry",
     "MatchHistoryPage",
     "MatchTiming",
 ]
-
-
-class Streak(CamelModel):
-    type: str
-    count: int
 
 
 class ColorRecord(CamelModel):
@@ -42,7 +36,7 @@ class User(CamelModel):
     losses: int = 0
     draws: int = 0
     casual_games: int | None = None
-    streak: Streak | None = None
+    streak: int = 0
     color_record: dict[str, ColorRecord] = {}
     trophies: int = 0
     rating: float = 0.0
